@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch Làm Việc Tuần - Firebase</title>
+    <title>Lịch Làm Việc Tuần</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -467,12 +467,12 @@
     <div class="container">
         <header>
             <h1>Lịch Làm Việc Tuần</h1>
-            <p class="subtitle">Từ Thứ Hai đến Chủ Nhật - Đồng bộ với Firebase</p>
+<!--            <p class="subtitle">Từ Thứ Hai đến Chủ Nhật - Đồng bộ với Firebase</p> -->
         </header>
         
         <div class="firebase-status">
             <div class="status-indicator" id="statusIndicator"></div>
-            <span id="statusText">Đang kết nối với Firebase...</span>
+            <span id="statusText">Đang kết nối ...</span>
         </div>
         
         <div class="search-section">
@@ -493,10 +493,11 @@
                         <!-- Options will be populated by JavaScript -->
                     </select>
                 </div>
-                
+              <div class="form-group">  
                 <button type="submit" class="search-btn">
                     <i class="fas fa-search"></i> Tìm kiếm
                 </button>
+              </div>    
             </form>
         </div>
         
