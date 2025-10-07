@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -14,843 +15,433 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: #333;
             min-height: 100vh;
-            padding: 15px; /* Giảm padding tổng thể */
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 14px; /* Kích thước chữ cơ bản nhỏ hơn */
         }
-        
+
         .container {
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
         }
-        
+
         header {
             text-align: center;
-            margin-bottom: 20px; /* Giảm khoảng cách */
+            margin-bottom: 15px;
             color: white;
-            padding: 15px; /* Giảm padding */
+            padding: 10px;
         }
-        
+
         h1 {
-            font-size: 2rem; /* Thu nhỏ */
-            margin-bottom: 8px; /* Giảm khoảng cách */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
-        
-        .subtitle {
-            font-size: 1rem; /* Thu nhỏ */
-            opacity: 0.9;
-        }
-        
+
         .search-section {
             background: white;
-            padding: 15px; /* Giảm padding */
-            border-radius: 8px; /* Giảm bo góc */
-            margin-bottom: 15px; /* Giảm khoảng cách */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .search-form {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px; /* Giảm khoảng cách giữa các form group */
+            gap: 10px;
             align-items: flex-end;
         }
-        
+
         .form-group {
             flex: 1;
-            min-width: 180px; /* Thu nhỏ min-width */
+            min-width: 150px;
         }
-        
+
         .form-group label {
-            margin-bottom: 4px; /* Giảm khoảng cách */
+            display: block;
+            margin-bottom: 3px;
             font-weight: 600;
-            font-size: 0.95rem; /* Thu nhỏ chữ */
-        }
-        
-        .form-group input, .form-group select {
-            padding: 8px; /* Giảm padding */
-            border-radius: 4px; /* Giảm bo góc */
-            font-size: 0.9rem; /* Thu nhỏ chữ */
-        }
-        
-        .search-btn {
-            padding: 8px 15px; /* Giảm padding */
-            border-radius: 4px;
+            color: #444;
             font-size: 0.9rem;
-            height: 38px; /* Chiều cao tương ứng */
         }
-        
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .search-btn {
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background-color: #1a68e8;
+        }
+
         .current-week {
-            margin-bottom: 10px; /* Giảm khoảng cách */
-            font-size: 1rem; /* Thu nhỏ chữ */
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1rem;
             font-weight: 600;
         }
-        
+
         .calendar {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 10px; /* Giảm khoảng cách */
+            gap: 10px;
             margin-bottom: 20px;
         }
-        
+
         .day {
-            padding: 10px; /* Giảm padding */
-            border-radius: 8px; /* Giảm bo góc */
-        }
-        
-        .day-header {
-            margin-bottom: 10px; /* Giảm khoảng cách */
-            padding-bottom: 8px; /* Giảm padding */
-        }
-        
-        .day-name {
-            font-size: 1.1rem; /* Thu nhỏ chữ */
-        }
-        
-        .date {
-            font-size: 0.8rem; /* Thu nhỏ chữ */
-        }
-        
-        .full-date {
-            margin-top: 3px; /* Giảm khoảng cách */
-            font-size: 0.8rem; /* Thu nhỏ chữ */
-        }
-        
-        .tasks {
-            min-height: 120px; /* Giảm min-height */
-        }
-        
-        .task {
-            padding: 8px; /* Giảm padding */
-            margin-bottom: 8px; /* Giảm khoảng cách */
-            border-radius: 6px; /* Giảm bo góc */
-        }
-        
-        .task-header {
-            margin-bottom: 6px; /* Giảm khoảng cách */
-        }
-        
-        .task-title {
-            font-size: 0.95rem; /* Thu nhỏ chữ */
-        }
-        
-        .task-time {
-            padding: 2px 6px; /* Giảm padding */
-            border-radius: 10px;
-            font-size: 0.7rem; /* Thu nhỏ chữ */
-        }
-        
-        .task-details {
-            font-size: 0.8rem; /* Thu nhỏ chữ */
-        }
-        
-        .task-location i, .task-notes i {
-            margin-right: 4px; /* Giảm khoảng cách */
-            width: 14px; /* Thu nhỏ icon */
-        }
-        
-        .task-actions {
-            gap: 6px; /* Giảm khoảng cách */
-            margin-top: 8px; /* Giảm khoảng cách */
-        }
-        
-        .task-actions button {
-            font-size: 0.75rem; /* Thu nhỏ chữ */
-            padding: 3px 8px; /* Giảm padding */
-            border-radius: 3px;
-        }
-        
-        .add-task-btn {
-            padding: 8px 10px; /* Giảm padding */
-            border-radius: 4px;
-            margin-top: 8px; /* Giảm khoảng cách */
-            font-size: 0.9rem;
-            gap: 6px;
-        }
-        
-        .controls {
-            gap: 10px; /* Giảm khoảng cách */
-            margin-bottom: 15px; /* Giảm khoảng cách */
-            flex-wrap: wrap; /* Cho phép xuống dòng trên mobile */
-        }
-        
-        .controls button {
-            padding: 8px 15px; /* Giảm padding */
-            font-size: 0.9rem;
-        }
-        
-        /* New Export Button Style */
-        .export-btn {
-            background-color: #27ae60;
-            color: white;
-        }
-
-        .export-btn:hover {
-            background-color: #2ecc71;
-            color: white;
-        }
-
-        .modal-content {
-            padding: 20px; /* Giảm padding */
+            background-color: white;
             border-radius: 8px;
-            max-width: 500px; /* Thu nhỏ modal */
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
         }
-        
-        .modal h2 {
-            margin-bottom: 15px; /* Giảm khoảng cách */
-            font-size: 1.5rem;
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 4px;
         }
-        
-        .form-group {
-            margin-bottom: 10px; /* Giảm khoảng cách */
+
+        .day-name {
+            font-weight: bold;
+            font-size: 1rem;
         }
-        
-        .form-group input, .form-group textarea, .form-group select {
-            padding: 8px; /* Giảm padding */
+
+        .date {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .full-date {
+            color: #2575fc;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .task {
+            background-color: #f8f9fa;
+            padding: 8px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            border-left: 4px solid #2575fc;
+        }
+
+        .task-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2c3e50;
+        }
+
+        .task-time {
+            background: #2575fc;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .task-details {
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+            justify-content: flex-end;
+        }
+
+        .task-actions button {
+            font-size: 0.8rem;
+            padding: 3px 6px;
             border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .edit-btn { color: #3498db; border-color: #3498db; }
+        .edit-btn:hover { background: #3498db; color: white; }
+        .delete-btn { color: #e74c3c; border-color: #e74c3c; }
+        .delete-btn:hover { background: #e74c3c; color: white; }
+
+        .add-task-btn {
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 6px;
             font-size: 0.9rem;
         }
-        
-        .form-group textarea {
-            min-height: 60px; /* Giảm min-height */
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
         }
-        
-        .form-actions {
-            gap: 8px; /* Giảm khoảng cách */
-            margin-top: 15px; /* Giảm khoảng cách */
+
+        .controls button {
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: none;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
         }
-        
-        .save-btn, .cancel-btn {
-            padding: 8px 15px; /* Giảm padding */
-            font-size: 0.9rem;
+
+        .controls button:hover {
+            background-color: #2575fc;
+            color: white;
         }
-        
-        .firebase-status {
-            margin-bottom: 15px; /* Giảm khoảng cách */
-            font-size: 0.9rem;
-        }
-        
-        footer {
-            margin-top: 15px; /* Giảm khoảng cách */
-            padding: 10px; /* Giảm padding */
-            font-size: 0.8rem; /* Thu nhỏ chữ */
-        }
-        
-        /* Media Queries cho điện thoại */
-        @media (max-width: 992px) {
-            .calendar {
-                grid-template-columns: repeat(3, 1fr); /* 3 cột trên tablet */
-                gap: 8px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 1.8rem;
-            }
-            .calendar {
-                grid-template-columns: repeat(2, 1fr); /* 2 cột trên điện thoại lớn */
-            }
-            .search-form {
-                flex-direction: column;
-            }
-            .form-group {
-                min-width: 100%;
-            }
-            .search-btn {
-                width: 100%;
-                height: auto;
-            }
-            .controls button {
-                flex: 1 1 auto;
-                min-width: 120px;
-            }
-            .controls {
-                justify-content: space-around;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .calendar {
-                grid-template-columns: 1fr; /* 1 cột trên điện thoại nhỏ */
-            }
-            .day {
-                padding: 15px;
-            }
-            .controls button {
-                min-width: unset;
-            }
-        }
+
+        @media (max-width: 992px) { .calendar { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 768px) { .calendar { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .calendar { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Lịch Làm Việc Tuần</h1>
-            </header>
-        
-        <div class="firebase-status">
-            <div class="status-indicator" id="statusIndicator"></div>
-            <span id="statusText">Đang kết nối ...</span>
-        </div>
-        
-        <div class="search-section">
-            <form class="search-form" id="searchForm">
-                <div class="form-group">
-                    <label for="searchDate">Tìm theo ngày</label>
-                    <input type="date" id="searchDate">
-                </div>
-                
-                <div class="form-group">
-                    <label for="searchWeek">Tìm theo tuần (trong năm)</label>
-                    <input type="number" id="searchWeek" min="1" max="53" placeholder="Nhập số tuần (1-53)">
-                </div>
-                
-                <div class="form-group">
-                    <label for="searchYear">Năm</label>
-                    <select id="searchYear">
-                        </select>
-                </div>
-              <div class="form-group">  
-                <button type="submit" class="search-btn">
-                    <i class="fas fa-search"></i> Tìm kiếm
-                </button>
-              </div>    
-            </form>
-        </div>
-        
-        <div class="current-week" id="currentWeekDisplay">
-            </div>
-        
-        <div class="controls">
-            <button id="prevWeek"><i class="fas fa-chevron-left"></i> Tuần Trước</button>
-            <button id="today"><i class="fas fa-calendar-day"></i> Hôm Nay</button>
-            <button id="nextWeek">Tuần Sau <i class="fas fa-chevron-right"></i></button>
-            <button id="exportExcel" class="export-btn"><i class="fas fa-file-excel"></i> Xuất Excel</button>
-        </div>
-        
-        <div class="calendar" id="calendar">
-            </div>
-        
-        <footer>
-            <p>© 2023 Lịch Làm Việc Tuần | Đồng bộ dữ liệu với Firebase Realtime Database</p>
-        </footer>
+<div class="container">
+    <header><h1>Lịch Làm Việc Tuần</h1></header>
+
+    <div class="search-section">
+        <form class="search-form" id="searchForm">
+            <div class="form-group"><label for="searchDate">Tìm theo ngày</label><input type="date" id="searchDate"></div>
+            <div class="form-group"><label for="searchWeek">Tuần</label><input type="number" id="searchWeek" min="1" max="53"></div>
+            <div class="form-group"><label for="searchYear">Năm</label><select id="searchYear"></select></div>
+            <div><button type="submit" class="search-btn"><i class="fas fa-search"></i> Tìm</button></div>
+        </form>
     </div>
 
-    <div class="modal" id="taskModal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Thêm Cuộc Họp Mới</h2>
-            <form id="taskForm">
-                <input type="hidden" id="taskId">
-                <input type="hidden" id="taskDay">
-                
-                <div class="form-group">
-                    <label for="taskTitle">Nội dung cuộc họp *</label>
-                    <input type="text" id="taskTitle" placeholder="Nhập nội dung cuộc họp" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="taskTime">Thời gian *</label>
-                    <input type="text" id="taskTime" placeholder="VD: 9:00 - 10:30" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="taskLocation">Địa điểm</label>
-                    <input type="text" id="taskLocation" placeholder="Nhập địa điểm cuộc họp">
-                </div>
-                
-                <div class="form-group">
-                    <label for="taskDescription">Ghi chú</label>
-                    <textarea id="taskDescription" placeholder="Nhập ghi chú về cuộc họp"></textarea>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="button" class="cancel-btn" id="cancelBtn">Hủy</button>
-                    <button type="submit" class="save-btn">Lưu Cuộc Họp</button>
-                </div>
-            </form>
-        </div>
+    <div class="current-week" id="currentWeekDisplay"></div>
+
+    <div class="controls">
+        <button id="prevWeek"><i class="fas fa-chevron-left"></i> Trước</button>
+        <button id="today"><i class="fas fa-calendar-day"></i> Hôm nay</button>
+        <button id="nextWeek">Sau <i class="fas fa-chevron-right"></i></button>
+        <button id="exportExcel"><i class="fas fa-file-excel"></i> Xuất Excel</button>
     </div>
 
-    <script>
-        // Firebase configuration
-        const firebaseConfig = { 
-  apiKey : "AIzaSyA-PqImoRNDnLYybE4tqziDk-fPnSsz0UY" , 
-  authDomain : "lich-lam-viec-mttq.firebaseapp.com" , 
-  databaseURL : "https://lich-lam-viec-mttq-default-rtdb.asia-southeast1.firebasedatabase.app" , 
-  projectId : "lich-lam-viec-mttq" , 
-  storageBucket : "lich-lam-viec-mttq.firebasestorage.app" , 
-  messagingSenderId : "281876982617" , 
-  appId : "1:281876982617:web:87a6e064497fe26c70ba48" 
+    <div class="calendar" id="calendar"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="taskModal" style="display:none;">
+    <div class="modal-content" style="background:white;padding:20px;border-radius:8px;max-width:500px;width:90%;margin:auto;">
+        <h2 id="modalTitle" style="text-align:center;color:#2575fc;">Thêm Cuộc Họp</h2>
+        <form id="taskForm">
+            <input type="hidden" id="taskId">
+            <input type="hidden" id="taskDay">
+            <div class="form-group"><label>Nội dung</label><input type="text" id="taskTitle" required></div>
+            <div class="form-group"><label>Thời gian</label><input type="text" id="taskTime" required></div>
+            <div class="form-group"><label>Địa điểm</label><input type="text" id="taskLocation"></div>
+            <div class="form-group"><label>Ghi chú</label><textarea id="taskDescription"></textarea></div>
+            <div class="form-actions" style="text-align:right;margin-top:10px;">
+                <button type="button" id="cancelBtn" class="cancel-btn">Hủy</button>
+                <button type="submit" class="save-btn">Lưu</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+const firebaseConfig = { 
+  apiKey : "AIzaSyA-PqImoRNDnLYybE4tqziDk-fPnSsz0UY",
+  authDomain : "lich-lam-viec-mttq.firebaseapp.com",
+  databaseURL : "https://lich-lam-viec-mttq-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId : "lich-lam-viec-mttq",
+  storageBucket : "lich-lam-viec-mttq.firebasestorage.app",
+  messagingSenderId : "281876982617",
+  appId : "1:281876982617:web:87a6e064497fe26c70ba48"
 };
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+document.addEventListener('DOMContentLoaded', () => {
+    const calendar = document.getElementById('calendar');
+    const prevWeekBtn = document.getElementById('prevWeek');
+    const todayBtn = document.getElementById('today');
+    const nextWeekBtn = document.getElementById('nextWeek');
+    const taskModal = document.getElementById('taskModal');
+    const taskForm = document.getElementById('taskForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const currentWeekDisplay = document.getElementById('currentWeekDisplay');
+    const searchForm = document.getElementById('searchForm');
+    const searchDate = document.getElementById('searchDate');
+    const searchWeek = document.getElementById('searchWeek');
+    const searchYear = document.getElementById('searchYear');
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const calendar = document.getElementById('calendar');
-            const prevWeekBtn = document.getElementById('prevWeek');
-            const todayBtn = document.getElementById('today');
-            const nextWeekBtn = document.getElementById('nextWeek');
-            const exportExcelBtn = document.getElementById('exportExcel'); // Nút mới
-            const taskModal = document.getElementById('taskModal');
-            const taskForm = document.getElementById('taskForm');
-            const modalTitle = document.getElementById('modalTitle');
-            const cancelBtn = document.getElementById('cancelBtn');
-            const statusIndicator = document.getElementById('statusIndicator');
-            const statusText = document.getElementById('statusText');
-            const searchForm = document.getElementById('searchForm');
-            const searchDate = document.getElementById('searchDate');
-            const searchWeek = document.getElementById('searchWeek');
-            const searchYear = document.getElementById('searchYear');
-            const currentWeekDisplay = document.getElementById('currentWeekDisplay');
-            
-            let currentDate = new Date();
-            let currentWeekTasks = {};
-            let editingTaskId = null;
-            
-            // Set to Monday of current week
-            function getMonday(date) {
-                const day = date.getDay();
-                const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-                const newDate = new Date(date);
-                newDate.setDate(diff);
-                newDate.setHours(0, 0, 0, 0); // Đảm bảo bắt đầu ngày
-                return newDate;
-            }
-            
-            let monday = getMonday(new Date(currentDate));
-            
-            // Populate year dropdown
-            function populateYearDropdown() {
-                const currentYear = new Date().getFullYear();
-                searchYear.innerHTML = '';
-                
-                for (let year = currentYear - 5; year <= currentYear + 5; year++) {
-                    const option = document.createElement('option');
-                    option.value = year;
-                    option.textContent = year;
-                    if (year === currentYear) {
-                        option.selected = true;
-                    }
-                    searchYear.appendChild(option);
-                }
-            }
-            
-            // Get week number in year
-            function getWeekNumber(date) {
-                const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-                const dayNum = d.getUTCDay() || 7;
-                d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-                const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-                return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-            }
-            
-            // Get date from week number and year
-            function getDateFromWeek(week, year) {
-                const simple = new Date(year, 0, 1 + (week - 1) * 7);
-                const dayOfWeek = simple.getDay();
-                const ISOweekStart = simple;
-                if (dayOfWeek <= 4) {
-                    ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
-                } else {
-                    ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
-                }
-                ISOweekStart.setHours(0, 0, 0, 0);
-                return ISOweekStart;
-            }
-            
-            // Update current week display
-            function updateCurrentWeekDisplay() {
-                const weekNumber = getWeekNumber(monday);
-                const year = monday.getFullYear();
-                const startDate = formatDate(monday);
-                const sunday = new Date(monday);
-                sunday.setDate(monday.getDate() + 6);
-                const endDate = formatDate(sunday);
-                
-                currentWeekDisplay.textContent = `Tuần ${weekNumber} năm ${year} (${startDate} - ${endDate})`;
-            }
-            
-            // Check Firebase connection status
-            const connectedRef = firebase.database().ref(".info/connected");
-            connectedRef.on("value", function(snap) {
-                if (snap.val() === true) {
-                    statusIndicator.classList.add('connected');
-                    statusText.textContent = "Đã kết nối với Firebase";
-                } else {
-                    statusIndicator.classList.remove('connected');
-                    statusText.textContent = "Mất kết nối với Firebase";
-                }
-            });
+    let currentDate = new Date();
+    function getMonday(d){d=new Date(d);const day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1);return new Date(d.setDate(diff));}
+    let monday = getMonday(currentDate);
 
-            function renderCalendar() {
-                calendar.innerHTML = '';
-                
-                const daysOfWeek = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'];
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                
-                for (let i = 0; i < 7; i++) {
-                    const dayDate = new Date(monday);
-                    dayDate.setDate(monday.getDate() + i);
-                    
-                    const dayElement = document.createElement('div');
-                    dayElement.className = 'day';
-                    
-                    // Add weekend class for Saturday and Sunday
-                    if (i === 5 || i === 6) {
-                        dayElement.classList.add('weekend');
-                    }
-                    
-                    // Add today class if it's today
-                    const dayDateCopy = new Date(dayDate);
-                    dayDateCopy.setHours(0, 0, 0, 0);
-                    if (dayDateCopy.getTime() === today.getTime()) {
-                        dayElement.classList.add('today');
-                    }
-                    
-                    const dayHeader = document.createElement('div');
-                    dayHeader.className = 'day-header';
-                    
-                    const dayName = document.createElement('div');
-                    dayName.className = 'day-name';
-                    dayName.textContent = daysOfWeek[i];
-                    
-                    const dateInfo = document.createElement('div');
-                    dateInfo.className = 'date-info';
-                    
-                    const date = document.createElement('div');
-                    date.className = 'date';
-                    date.textContent = formatDate(dayDate);
-                    
-                    const fullDate = document.createElement('div');
-                    fullDate.className = 'full-date';
-                    fullDate.textContent = formatFullDate(dayDate);
-                    
-                    dateInfo.appendChild(date);
-                    dateInfo.appendChild(fullDate);
-                    
-                    dayHeader.appendChild(dayName);
-                    dayHeader.appendChild(dateInfo);
-                    
-                    const tasks = document.createElement('div');
-                    tasks.className = 'tasks';
-                    tasks.id = `tasks-${i}`;
-                    
-                    // Load tasks from Firebase
-                    loadTasksForDay(i, tasks);
-                    
-                    const addTaskBtn = document.createElement('button');
-                    addTaskBtn.className = 'add-task-btn';
-                    addTaskBtn.innerHTML = '<i class="fas fa-plus"></i> Thêm cuộc họp';
-                    addTaskBtn.addEventListener('click', () => openAddTaskModal(i));
-                    
-                    dayElement.appendChild(dayHeader);
-                    dayElement.appendChild(tasks);
-                    dayElement.appendChild(addTaskBtn);
-                    
-                    calendar.appendChild(dayElement);
-                }
-                
-                updateCurrentWeekDisplay();
-            }
-            
-            function formatDate(date) {
-                const day = date.getDate();
-                const month = date.getMonth() + 1;
-                const year = date.getFullYear();
-                return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
-            }
-            
-            function formatFullDate(date) {
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                return date.toLocaleDateString('vi-VN', options);
-            }
-            
-            function getWeekId() {
-                // Create a unique ID for the current week
-                const year = monday.getFullYear();
-                const week = getWeekNumber(monday);
-                return `${year}-W${week}`;
-            }
-            
-            function loadTasksForDay(dayIndex, tasksContainer) {
-                const weekId = getWeekId();
-                const dayRef = database.ref(`weeks/${weekId}/days/${dayIndex}/tasks`);
-                
-                // Sử dụng .once('value') hoặc .on('value') tùy theo nhu cầu
-                // Ở đây dùng .on('value') để cập nhật realtime
-                dayRef.on('value', (snapshot) => {
-                    tasksContainer.innerHTML = '';
-                    const tasks = snapshot.val();
-                    
-                    // Cập nhật biến global currentWeekTasks
-                    const dayDate = new Date(monday);
-                    dayDate.setDate(monday.getDate() + dayIndex);
-                    const dateKey = formatDate(dayDate);
-                    
-                    currentWeekTasks[dateKey] = tasks || {}; 
+    function formatDate(date){const d=date.getDate(),m=date.getMonth()+1,y=date.getFullYear();return`${d<10?'0'+d:d}/${m<10?'0'+m:m}/${y}`;}
+    function getWeekNumber(date){const oneJan=new Date(date.getFullYear(),0,1);return Math.ceil((((date-oneJan)/86400000)+oneJan.getDay()+1)/7);}
+    function getDateFromWeek(week,year){const simple=new Date(year,0,1+(week-1)*7);const dow=simple.getDay();if(dow<=4)simple.setDate(simple.getDate()-simple.getDay()+1);else simple.setDate(simple.getDate()+8-simple.getDay());return simple;}
+    function getWeekId(){return `${monday.getFullYear()}-W${getWeekNumber(monday)}`;}
 
-                    if (tasks) {
-                        Object.keys(tasks).forEach(taskId => {
-                            const task = tasks[taskId];
-                            const taskElement = createTaskElement(taskId, task, dayIndex);
-                            tasksContainer.appendChild(taskElement);
-                        });
-                    }
-                });
-            }
-            
-            function createTaskElement(taskId, task, dayIndex) {
-                const taskElement = document.createElement('div');
-                taskElement.className = 'task';
-                taskElement.dataset.taskId = taskId;
-                
-                const taskHeader = document.createElement('div');
-                taskHeader.className = 'task-header';
-                
-                const taskTitle = document.createElement('div');
-                taskTitle.className = 'task-title';
-                taskTitle.textContent = task.title;
-                
-                const taskTime = document.createElement('div');
-                taskTime.className = 'task-time';
-                taskTime.textContent = task.time;
-                
-                taskHeader.appendChild(taskTitle);
-                taskHeader.appendChild(taskTime);
-                
-                const taskDetails = document.createElement('div');
-                taskDetails.className = 'task-details';
-                
-                if (task.location) {
-                    const locationElement = document.createElement('div');
-                    locationElement.className = 'task-location';
-                    locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${task.location}`;
-                    taskDetails.appendChild(locationElement);
-                }
-                
-                if (task.description) {
-                    const notesElement = document.createElement('div');
-                    notesElement.className = 'task-notes';
-                    notesElement.innerHTML = `<i class="fas fa-sticky-note"></i> ${task.description}`;
-                    taskDetails.appendChild(notesElement);
-                }
-                
-                const taskActions = document.createElement('div');
-                taskActions.className = 'task-actions';
-                
-                const editBtn = document.createElement('button');
-                editBtn.className = 'edit-btn';
-                editBtn.innerHTML = '<i class="fas fa-edit"></i> Sửa';
-                editBtn.title = 'Sửa';
-                editBtn.addEventListener('click', () => openEditTaskModal(dayIndex, taskId, task));
-                
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'delete-btn';
-                deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Xóa';
-                deleteBtn.title = 'Xóa';
-                deleteBtn.addEventListener('click', () => deleteTask(dayIndex, taskId));
-                
-                taskActions.appendChild(editBtn);
-                taskActions.appendChild(deleteBtn);
-                
-                taskElement.appendChild(taskHeader);
-                taskElement.appendChild(taskDetails);
-                taskElement.appendChild(taskActions);
-                
-                return taskElement;
-            }
-            
-            function openAddTaskModal(dayIndex) {
-                modalTitle.textContent = 'Thêm Cuộc Họp Mới';
-                taskForm.reset();
-                document.getElementById('taskDay').value = dayIndex;
-                document.getElementById('taskId').value = '';
-                taskModal.style.display = 'flex';
-            }
-            
-            function openEditTaskModal(dayIndex, taskId, task) {
-                modalTitle.textContent = 'Sửa Cuộc Họp';
-                document.getElementById('taskDay').value = dayIndex;
-                document.getElementById('taskId').value = taskId;
-                document.getElementById('taskTitle').value = task.title;
-                document.getElementById('taskTime').value = task.time;
-                document.getElementById('taskLocation').value = task.location || '';
-                document.getElementById('taskDescription').value = task.description || '';
-                taskModal.style.display = 'flex';
-            }
-            
-            function saveTask(dayIndex, taskId, taskData) {
-                const weekId = getWeekId();
-                const taskRef = database.ref(`weeks/${weekId}/days/${dayIndex}/tasks/${taskId}`);
-                
-                return taskRef.set(taskData);
-            }
-            
-            function deleteTask(dayIndex, taskId) {
-                if (confirm('Bạn có chắc chắn muốn xóa cuộc họp này?')) {
-                    const weekId = getWeekId();
-                    const taskRef = database.ref(`weeks/${weekId}/days/${dayIndex}/tasks/${taskId}`);
-                    taskRef.remove();
-                }
-            }
+    function updateWeekDisplay(){
+        const weekNumber=getWeekNumber(monday);
+        const sunday=new Date(monday);sunday.setDate(monday.getDate()+6);
+        currentWeekDisplay.textContent=`Tuần ${weekNumber} (${formatDate(monday)} - ${formatDate(sunday)})`;
+    }
 
-            // Hàm xuất file Excel (CSV)
-            function exportToExcel() {
-                const dayNames = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
-                const daysOfWeekVI = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'];
-                let csv = 'Thứ,Ngày,Giờ,Nội dung,Ghi chú\n'; // Header CSV
-                
-                // Lấy tất cả tasks trong tuần hiện tại từ currentWeekTasks (đã được cập nhật trong loadTasksForDay)
-                const sortedDates = Object.keys(currentWeekTasks).sort((a, b) => {
-                    const [dayA, monthA, yearA] = a.split('/').map(Number);
-                    const [dayB, monthB, yearB] = b.split('/').map(Number);
-                    const dateA = new Date(yearA, monthA - 1, dayA);
-                    const dateB = new Date(yearB, monthB - 1, dayB);
-                    return dateA - dateB;
-                });
+    function populateYearDropdown(){
+        const curY=new Date().getFullYear();
+        for(let y=curY-5;y<=curY+5;y++){
+            const o=document.createElement('option');
+            o.value=y;o.textContent=y;
+            if(y===curY)o.selected=true;
+            searchYear.appendChild(o);
+        }
+    }
 
-                sortedDates.forEach(dateStr => {
-                    const tasks = currentWeekTasks[dateStr];
-                    if (tasks) {
-                        const [day, month, year] = dateStr.split('/').map(Number);
-                        const dateObj = new Date(year, month - 1, day);
-                        
-                        // Lấy tên Thứ trong tuần theo tiếng Việt
-                        // getDay() trả về 0 (CN) đến 6 (T7). 1 (T2) đến 6 (T7), 0 (CN).
-                        // Trong mảng daysOfWeekVI (index 0 là T2, 6 là CN)
-                        let dayIndex = dateObj.getDay(); // 0 (CN) -> 6 (T7)
-                        let dayVIIndex = (dayIndex === 0) ? 6 : dayIndex - 1; // 0 (CN) -> 6, 1 (T2) -> 0
-                        const dayNameVI = daysOfWeekVI[dayVIIndex]; 
+    function renderCalendar(){
+        calendar.innerHTML='';
+        const days=['Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy','Chủ Nhật'];
+        for(let i=0;i<7;i++){
+            const d=new Date(monday);d.setDate(monday.getDate()+i);
+            const dayDiv=document.createElement('div');dayDiv.className='day';
+            const header=document.createElement('div');header.className='day-header';
+            header.innerHTML=`<div class="day-name">${days[i]}</div><div class="date">${formatDate(d)}</div>`;
+            const tasks=document.createElement('div');tasks.className='tasks';tasks.id=`tasks-${i}`;
+            loadTasks(i,tasks);
+            const btn=document.createElement('button');btn.className='add-task-btn';btn.innerHTML='<i class="fas fa-plus"></i> Thêm';btn.onclick=()=>openAddTaskModal(i);
+            dayDiv.append(header,tasks,btn);
+            calendar.append(dayDiv);
+        }
+        updateWeekDisplay();
+    }
 
-                        Object.keys(tasks).forEach(taskId => {
-                            const task = tasks[taskId];
-                            // Escape double quotes and separate by comma
-                            const content = `"${task.title.replace(/"/g, '""')}"`;
-                            const notes = `"${(task.description || '').replace(/"/g, '""')}"`;
-                            
-                            csv += `${dayNameVI},${dateStr},${task.time},${content},${notes}\n`;
-                        });
-                    }
-                });
-
-                // Create a Blob and download the file
-                const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csv], { type: 'text/csv;charset=utf-8;' }); // Thêm BOM cho UTF-8
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.setAttribute('hidden', '');
-                a.setAttribute('href', url);
-                const weekNumber = getWeekNumber(monday);
-                const year = monday.getFullYear();
-                a.setAttribute('download', `Lich_Lam_Viec_Tuan_${weekNumber}_Nam_${year}.csv`);
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }
-            
-            // Event listeners
-            prevWeekBtn.addEventListener('click', function() {
-                monday.setDate(monday.getDate() - 7);
-                renderCalendar();
-            });
-            
-            todayBtn.addEventListener('click', function() {
-                currentDate = new Date();
-                monday = getMonday(new Date(currentDate));
-                renderCalendar();
-            });
-            
-            nextWeekBtn.addEventListener('click', function() {
-                monday.setDate(monday.getDate() + 7);
-                renderCalendar();
-            });
-
-            exportExcelBtn.addEventListener('click', exportToExcel); // Gán hàm exportToExcel cho nút
-            
-            taskForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const dayIndex = document.getElementById('taskDay').value;
-                const taskId = document.getElementById('taskId').value || Date.now().toString();
-                const taskData = {
-                    title: document.getElementById('taskTitle').value,
-                    time: document.getElementById('taskTime').value,
-                    location: document.getElementById('taskLocation').value,
-                    description: document.getElementById('taskDescription').value
-                };
-                
-                saveTask(dayIndex, taskId, taskData)
-                    .then(() => {
-                        taskModal.style.display = 'none';
-                        taskForm.reset();
-                    })
-                    .catch(error => {
-                        console.error('Lỗi khi lưu cuộc họp:', error);
-                        alert('Có lỗi xảy ra khi lưu cuộc họp. Vui lòng thử lại.');
-                    });
-            });
-            
-            cancelBtn.addEventListener('click', function() {
-                taskModal.style.display = 'none';
-                taskForm.reset();
-            });
-            
-            searchForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const dateValue = searchDate.value;
-                const weekValue = searchWeek.value;
-                const yearValue = searchYear.value;
-                
-                if (dateValue) {
-                    // Search by specific date
-                    const selectedDate = new Date(dateValue.replace(/-/g, '/')); // Chuyển đổi định dạng yyyy-mm-dd sang chuẩn JS
-                    monday = getMonday(selectedDate);
-                    renderCalendar();
-                } else if (weekValue && yearValue) {
-                    // Search by week number
-                    const week = parseInt(weekValue);
-                    const year = parseInt(yearValue);
-                    
-                    if (week < 1 || week > 53) {
-                        alert('Vui lòng nhập số tuần từ 1 đến 53');
-                        return;
-                    }
-                    
-                    monday = getDateFromWeek(week, year);
-                    renderCalendar();
-                } else {
-                    alert('Vui lòng chọn ngày hoặc nhập số tuần và năm');
-                }
-            });
-            
-            // Close modal when clicking outside
-            window.addEventListener('click', function(e) {
-                if (e.target === taskModal) {
-                    taskModal.style.display = 'none';
-                    taskForm.reset();
-                }
-            });
-            
-            // Initialize
-            populateYearDropdown();
-            renderCalendar();
+    function loadTasks(i,container){
+        const ref=database.ref(`weeks/${getWeekId()}/days/${i}/tasks`);
+        ref.on('value',snap=>{
+            container.innerHTML='';
+            const data=snap.val();
+            if(data){Object.entries(data).forEach(([id,t])=>container.append(createTaskEl(i,id,t)));}
         });
-    </script>
+    }
+
+    function createTaskEl(i,id,t){
+        const el=document.createElement('div');el.className='task';
+        el.innerHTML=`<div class="task-header">
+            <span class="task-title">${t.title}</span>
+            <span class="task-time">${t.time}</span>
+        </div>
+        <div class="task-details">${t.description||''}</div>
+        <div class="task-actions">
+            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+            <button class="delete-btn"><i class="fas fa-trash"></i></button>
+        </div>`;
+        el.querySelector('.edit-btn').onclick=()=>openEditTaskModal(i,id,t);
+        el.querySelector('.delete-btn').onclick=()=>deleteTask(i,id);
+        return el;
+    }
+
+    function openAddTaskModal(i){modalTitle.textContent='Thêm Cuộc Họp';taskForm.reset();taskModal.style.display='flex';document.getElementById('taskDay').value=i;}
+    function openEditTaskModal(i,id,t){modalTitle.textContent='Sửa Cuộc Họp';taskModal.style.display='flex';
+        document.getElementById('taskDay').value=i;document.getElementById('taskId').value=id;
+        document.getElementById('taskTitle').value=t.title;document.getElementById('taskTime').value=t.time;
+        document.getElementById('taskLocation').value=t.location||'';document.getElementById('taskDescription').value=t.description||'';
+    }
+
+    function saveTask(i,id,data){return database.ref(`weeks/${getWeekId()}/days/${i}/tasks/${id}`).set(data);}
+    function deleteTask(i,id){if(confirm('Xóa cuộc họp này?'))database.ref(`weeks/${getWeekId()}/days/${i}/tasks/${id}`).remove();}
+
+    taskForm.onsubmit=e=>{
+        e.preventDefault();
+        const i=document.getElementById('taskDay').value;
+        const id=document.getElementById('taskId').value||Date.now().toString();
+        const data={
+            title:document.getElementById('taskTitle').value,
+            time:document.getElementById('taskTime').value,
+            location:document.getElementById('taskLocation').value,
+            description:document.getElementById('taskDescription').value
+        };
+        saveTask(i,id,data).then(()=>{taskModal.style.display='none';});
+    };
+    cancelBtn.onclick=()=>taskModal.style.display='none';
+
+    prevWeekBtn.onclick=()=>{monday.setDate(monday.getDate()-7);renderCalendar();};
+    todayBtn.onclick=()=>{monday=getMonday(new Date());renderCalendar();};
+    nextWeekBtn.onclick=()=>{monday.setDate(monday.getDate()+7);renderCalendar();};
+
+    searchForm.onsubmit=e=>{
+        e.preventDefault();
+        const date=searchDate.value,week=searchWeek.value,year=searchYear.value;
+        if(date){monday=getMonday(new Date(date));renderCalendar();}
+        else if(week&&year){monday=getDateFromWeek(parseInt(week),parseInt(year));renderCalendar();}
+        else alert('Chọn ngày hoặc nhập tuần + năm');
+    };
+
+    // --- Xuất Excel ---
+    function exportToExcel(){
+        const weekRef=database.ref(`weeks/${getWeekId()}/days`);
+        weekRef.once('value').then(snap=>{
+            const data=snap.val();
+            if(!data){alert('Không có dữ liệu');return;}
+            const rows=[];const days=['Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy','Chủ Nhật'];
+            for(let i=0;i<7;i++){
+                const d=data[i];
+                if(d&&d.tasks){
+                    Object.values(d.tasks).forEach(t=>{
+                        rows.push({
+                            "Thứ":days[i],
+                            "Ngày":formatDate(new Date(monday.getFullYear(),monday.getMonth(),monday.getDate()+i)),
+                            "Giờ":t.time||'',
+                            "Nội dung":t.title||'',
+                            "Ghi chú":t.description||''
+                        });
+                    });
+                }
+            }
+            if(rows.length===0){alert('Không có cuộc họp nào');return;}
+            const wb=XLSX.utils.book_new();
+            const ws=XLSX.utils.json_to_sheet(rows);
+            XLSX.utils.book_append_sheet(wb,ws,"Lịch Tuần");
+            XLSX.writeFile(wb,`Lich_Tuan_${getWeekId()}.xlsx`);
+        });
+    }
+    document.getElementById('exportExcel').onclick=exportToExcel;
+
+    populateYearDropdown();
+    renderCalendar();
+});
+</script>
 </body>
 </html>
