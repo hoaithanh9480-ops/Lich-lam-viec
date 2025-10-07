@@ -655,10 +655,10 @@
             connectedRef.on("value", function(snap) {
                 if (snap.val() === true) {
                     statusIndicator.classList.add('connected');
-                    statusText.textContent = "Đã kết nối với Firebase";
+                    statusText.textContent = "Đã kết nối";
                 } else {
                     statusIndicator.classList.remove('connected');
-                    statusText.textContent = "Mất kết nối với Firebase";
+                    statusText.textContent = "Mất kết nối";
                 }
             });
 
