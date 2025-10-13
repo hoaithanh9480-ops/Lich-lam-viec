@@ -17,7 +17,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, #1a3a8f 0%, #2c5fcc 100%);
             color: #333;
             min-height: 100vh;
             padding: 15px;
@@ -37,6 +37,7 @@
             margin-bottom: 20px;
             color: white;
             padding: 15px;
+            width: 100%;
         }
         
         h1 {
@@ -50,82 +51,60 @@
             opacity: 0.9;
         }
         
-        .search-section {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .search-form {
+        .week-navigation {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: flex-end;
-        }
-        
-        .form-group {
-            flex: 1;
-            min-width: 180px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 4px;
-            font-weight: 600;
-            color: #444;
-            font-size: 0.9rem;
-        }
-        
-        .form-group input, .form-group select {
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: white;
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 0.9rem;
+            padding: 0 10px;
         }
         
-        .search-btn {
-            background-color: #2575fc;
+        .week-nav-btn {
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 8px 15px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
-            transition: background 0.3s;
-            height: 38px;
-            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .search-btn:hover {
-            background-color: #1a68e8;
+        .week-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
         
         .current-week {
             text-align: center;
             color: white;
-            margin-bottom: 12px;
-            font-size: 1rem;
+            font-size: 1.2rem;
             font-weight: 600;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
         }
         
         .calendar {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+            width: 100%;
         }
         
         .day {
             background-color: white;
-            border-radius: 8px;
+            border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
+            padding: 20px;
+            transition: all 0.3s;
+            border-left: 5px solid #2c5fcc;
         }
         
         .day:hover {
@@ -137,93 +116,85 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
         }
         
         .day-name {
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.3rem;
+            color: #2c5fcc;
         }
         
         .date {
             color: #666;
-            font-size: 0.85rem;
-        }
-        
-        .full-date {
-            color: #2575fc;
+            font-size: 1rem;
             font-weight: 600;
-            margin-top: 4px;
-            font-size: 0.8rem;
         }
         
         .tasks {
-            flex-grow: 1;
-            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         
         .task {
             background-color: #f8f9fa;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            border-left: 4px solid #2575fc;
-            transition: transform 0.2s;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2c5fcc;
+            transition: all 0.2s;
+            position: relative;
         }
         
         .task:hover {
             transform: translateX(3px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
         }
         
-        .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 6px;
+        .task-time {
+            background: #2c5fcc;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 8px;
         }
         
         .task-title {
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #2c3e50;
-            flex: 1;
-            margin-right: 8px;
-        }
-        
-        .task-time {
-            background: #2575fc;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            white-space: nowrap;
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
         
         .task-details {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: #555;
         }
         
         .task-location, .task-notes {
             display: flex;
-            align-items: center;
-            margin-top: 4px;
+            align-items: flex-start;
+            margin-top: 6px;
         }
         
         .task-location i, .task-notes i {
-            margin-right: 5px;
+            margin-right: 8px;
             color: #7f8c8d;
-            width: 14px;
-            font-size: 0.8rem;
+            width: 16px;
+            font-size: 0.9rem;
+            margin-top: 2px;
         }
         
         .task-actions {
             display: flex;
-            gap: 6px;
-            margin-top: 8px;
+            gap: 8px;
+            margin-top: 12px;
             justify-content: flex-end;
         }
         
@@ -231,10 +202,13 @@
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 0.8rem;
-            padding: 4px 8px;
-            border-radius: 3px;
+            font-size: 0.85rem;
+            padding: 5px 10px;
+            border-radius: 4px;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         
         .edit-btn {
@@ -258,67 +232,65 @@
         }
         
         .add-task-btn {
-            background-color: #2575fc;
+            background-color: #2c5fcc;
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
+            padding: 10px 15px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            margin-top: 8px;
+            margin-top: 15px;
             width: 100%;
-            transition: background 0.3s;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            font-size: 0.85rem;
+            gap: 8px;
+            font-size: 0.9rem;
         }
         
         .add-task-btn:hover {
-            background-color: #1a68e8;
-        }
-        
-        .weekend {
-            background-color: #fff9e6;
-        }
-        
-        .weekend .day-name {
-            color: #e74c3c;
+            background-color: #1a4bb8;
+            transform: translateY(-2px);
         }
         
         .today {
             background-color: #e8f4ff;
-            border: 2px solid #2575fc;
+            border-left: 5px solid #e74c3c;
         }
         
         .today .day-name {
-            color: #2575fc;
+            color: #e74c3c;
         }
         
         .controls {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 15px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
+            width: 100%;
         }
         
-        button {
+        .control-btn {
             background-color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 10px 20px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        button:hover {
-            background-color: #2575fc;
+        .control-btn:hover {
+            background-color: #2c5fcc;
             color: white;
+            transform: translateY(-2px);
         }
         
         .export-btn {
@@ -341,155 +313,172 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
         
         .modal-content {
             background-color: white;
-            padding: 25px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 550px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             max-height: 90vh;
             overflow-y: auto;
         }
         
         .modal h2 {
-            margin-bottom: 15px;
-            color: #2575fc;
+            margin-bottom: 20px;
+            color: #2c5fcc;
             text-align: center;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
         }
         
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: #444;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
         
         .form-group input, .form-group textarea, .form-group select {
             width: 100%;
-            padding: 8px;
+            padding: 10px 12px;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 0.9rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: border 0.3s;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: #2c5fcc;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(44, 95, 204, 0.2);
         }
         
         .form-group textarea {
-            min-height: 70px;
+            min-height: 80px;
             resize: vertical;
         }
         
         .form-actions {
             display: flex;
             justify-content: flex-end;
-            gap: 8px;
-            margin-top: 15px;
+            gap: 10px;
+            margin-top: 20px;
         }
         
         .save-btn {
-            background-color: #2575fc;
+            background-color: #2c5fcc;
             color: white;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            transition: all 0.3s;
         }
         
         .save-btn:hover {
-            background-color: #1a68e8;
+            background-color: #1a4bb8;
+            transform: translateY(-2px);
         }
         
         .cancel-btn {
             background-color: #e0e0e0;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            transition: all 0.3s;
         }
         
         .cancel-btn:hover {
             background-color: #d0d0d0;
-        }
-        
-        .firebase-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 15px;
-            color: white;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #e74c3c;
-        }
-        
-        .status-indicator.connected {
-            background-color: #2ecc71;
+            transform: translateY(-2px);
         }
         
         footer {
             text-align: center;
             color: white;
-            margin-top: 15px;
-            padding: 15px;
-            font-size: 0.85rem;
+            margin-top: 20px;
+            padding: 20px;
+            font-size: 0.9rem;
             opacity: 0.8;
+            width: 100%;
         }
         
-        @media (max-width: 992px) {
-            .calendar {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .calendar {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .search-form {
+            .week-navigation {
                 flex-direction: column;
+                gap: 15px;
             }
             
-            .form-group {
-                min-width: 100%;
+            .day-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
             }
-        }
-        
-        @media (max-width: 480px) {
-            .calendar {
-                grid-template-columns: 1fr;
+            
+            .controls {
+                gap: 10px;
+            }
+            
+            .control-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
             }
             
             h1 {
                 font-size: 1.8rem;
             }
             
+            .current-week {
+                font-size: 1rem;
+                padding: 8px 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
             .controls {
                 flex-direction: column;
                 align-items: center;
+                gap: 8px;
             }
             
-            .controls button {
+            .control-btn {
                 width: 100%;
-                max-width: 250px;
+                max-width: 280px;
+                justify-content: center;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .save-btn, .cancel-btn {
+                width: 100%;
+            }
+            
+            body {
+                padding: 10px;
             }
         }
     </style>
@@ -498,48 +487,24 @@
     <div class="container">
         <header>
             <h1>Lịch Làm Việc Tuần</h1>
+            <p class="subtitle">Quản lý lịch trình làm việc hàng tuần</p>
         </header>
         
-        <div class="firebase-status">
-            <div class="status-indicator" id="statusIndicator"></div>
-            <span id="statusText">Đang kết nối ...</span>
-        </div>
-        
-        <div class="search-section">
-            <form class="search-form" id="searchForm">
-                <div class="form-group">
-                    <label for="searchDate">Tìm theo ngày</label>
-                    <input type="date" id="searchDate">
-                </div>
-                
-                <div class="form-group">
-                    <label for="searchWeek">Tìm theo tuần (trong năm)</label>
-                    <input type="number" id="searchWeek" min="1" max="53" placeholder="Nhập số tuần (1-53)">
-                </div>
-                
-                <div class="form-group">
-                    <label for="searchYear">Năm</label>
-                    <select id="searchYear">
-                        <!-- Options will be populated by JavaScript -->
-                    </select>
-                </div>
-              <div class="form-group">  
-                <button type="submit" class="search-btn">
-                    <i class="fas fa-search"></i> Tìm kiếm
-                </button>
-              </div>    
-            </form>
-        </div>
-        
-        <div class="current-week" id="currentWeekDisplay">
-            <!-- Current week info will be displayed here -->
+        <div class="week-navigation">
+            <button class="week-nav-btn" id="prevWeek">
+                <i class="fas fa-chevron-left"></i> Tuần trước
+            </button>
+            <div class="current-week" id="currentWeekDisplay">
+                <!-- Current week info will be displayed here -->
+            </div>
+            <button class="week-nav-btn" id="nextWeek">
+                Tuần sau <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
         
         <div class="controls">
-            <button id="prevWeek"><i class="fas fa-chevron-left"></i> Tuần Trước</button>
-            <button id="today"><i class="fas fa-calendar-day"></i> Hôm Nay</button>
-            <button id="nextWeek">Tuần Sau <i class="fas fa-chevron-right"></i></button>
-            <button id="exportExcel" class="export-btn"><i class="fas fa-file-excel"></i> Xuất Excel</button>
+            <button class="control-btn" id="today"><i class="fas fa-calendar-day"></i> Hôm Nay</button>
+            <button class="control-btn export-btn" id="exportExcel"><i class="fas fa-file-excel"></i> Xuất Excel</button>
         </div>
         
         <div class="calendar" id="calendar">
@@ -566,7 +531,7 @@
                 
                 <div class="form-group">
                     <label for="taskTime">Thời gian *</label>
-                    <input type="text" id="taskTime" placeholder="VD: 9:00 - 10:30" required>
+                    <input type="text" id="taskTime" placeholder="VD: 7 giờ 00'" required>
                 </div>
                 
                 <div class="form-group">
@@ -613,12 +578,6 @@
             const taskForm = document.getElementById('taskForm');
             const modalTitle = document.getElementById('modalTitle');
             const cancelBtn = document.getElementById('cancelBtn');
-            const statusIndicator = document.getElementById('statusIndicator');
-            const statusText = document.getElementById('statusText');
-            const searchForm = document.getElementById('searchForm');
-            const searchDate = document.getElementById('searchDate');
-            const searchWeek = document.getElementById('searchWeek');
-            const searchYear = document.getElementById('searchYear');
             const currentWeekDisplay = document.getElementById('currentWeekDisplay');
             
             let currentDate = new Date();
@@ -634,40 +593,11 @@
             
             let monday = getMonday(new Date(currentDate));
             
-            // Populate year dropdown
-            function populateYearDropdown() {
-                const currentYear = new Date().getFullYear();
-                searchYear.innerHTML = '';
-                
-                for (let year = currentYear - 5; year <= currentYear + 5; year++) {
-                    const option = document.createElement('option');
-                    option.value = year;
-                    option.textContent = year;
-                    if (year === currentYear) {
-                        option.selected = true;
-                    }
-                    searchYear.appendChild(option);
-                }
-            }
-            
             // Get week number in year
             function getWeekNumber(date) {
                 const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
                 const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
                 return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
-            }
-            
-            // Get date from week number and year
-            function getDateFromWeek(week, year) {
-                const simple = new Date(year, 0, 1 + (week - 1) * 7);
-                const dayOfWeek = simple.getDay();
-                const ISOweekStart = simple;
-                if (dayOfWeek <= 4) {
-                    ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
-                } else {
-                    ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
-                }
-                return ISOweekStart;
             }
             
             // Update current week display
@@ -679,25 +609,13 @@
                 sunday.setDate(monday.getDate() + 6);
                 const endDate = formatDate(sunday);
                 
-                currentWeekDisplay.textContent = `Tuần ${weekNumber} năm ${year} (${startDate} - ${endDate})`;
+                currentWeekDisplay.textContent = `${startDate} - ${endDate}`;
             }
             
-            // Check Firebase connection status
-            const connectedRef = firebase.database().ref(".info/connected");
-            connectedRef.on("value", function(snap) {
-                if (snap.val() === true) {
-                    statusIndicator.classList.add('connected');
-                    statusText.textContent = "Đã kết nối với Firebase";
-                } else {
-                    statusIndicator.classList.remove('connected');
-                    statusText.textContent = "Mất kết nối với Firebase";
-                }
-            });
-
             function renderCalendar() {
                 calendar.innerHTML = '';
                 
-                const daysOfWeek = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'];
+                const daysOfWeek = ['THỨ HAI', 'THỨ BA', 'THỨ TƯ', 'THỨ NĂM', 'THỨ SÁU', 'THỨ BẢY', 'CHỦ NHẬT'];
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
                 
@@ -707,11 +625,6 @@
                     
                     const dayElement = document.createElement('div');
                     dayElement.className = 'day';
-                    
-                    // Add weekend class for Saturday and Sunday
-                    if (i === 5 || i === 6) {
-                        dayElement.classList.add('weekend');
-                    }
                     
                     // Add today class if it's today
                     const dayDateCopy = new Date(dayDate);
@@ -727,22 +640,12 @@
                     dayName.className = 'day-name';
                     dayName.textContent = daysOfWeek[i];
                     
-                    const dateInfo = document.createElement('div');
-                    dateInfo.className = 'date-info';
-                    
                     const date = document.createElement('div');
                     date.className = 'date';
-                    date.textContent = formatDate(dayDate);
-                    
-                    const fullDate = document.createElement('div');
-                    fullDate.className = 'full-date';
-                    fullDate.textContent = formatFullDate(dayDate);
-                    
-                    dateInfo.appendChild(date);
-                    dateInfo.appendChild(fullDate);
+                    date.textContent = `NGÀY ${formatDate(dayDate)}`;
                     
                     dayHeader.appendChild(dayName);
-                    dayHeader.appendChild(dateInfo);
+                    dayHeader.appendChild(date);
                     
                     const tasks = document.createElement('div');
                     tasks.className = 'tasks';
@@ -773,16 +676,56 @@
                 return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
             }
             
-            function formatFullDate(date) {
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                return date.toLocaleDateString('vi-VN', options);
-            }
-            
             function getWeekId() {
                 // Create a unique ID for the current week
                 const year = monday.getFullYear();
                 const week = getWeekNumber(monday);
                 return `${year}-W${week}`;
+            }
+            
+            // Function to sort tasks by time
+            function sortTasksByTime(tasks) {
+                return Object.keys(tasks).sort((a, b) => {
+                    const timeA = tasks[a].time;
+                    const timeB = tasks[b].time;
+                    
+                    // Extract start time (first part before '-')
+                    const startTimeA = timeA.split('-')[0].trim();
+                    const startTimeB = timeB.split('-')[0].trim();
+                    
+                    // Convert to minutes for comparison
+                    const minutesA = timeToMinutes(startTimeA);
+                    const minutesB = timeToMinutes(startTimeB);
+                    
+                    return minutesA - minutesB;
+                });
+            }
+            
+            // Helper function to convert time string to minutes
+            function timeToMinutes(timeStr) {
+                // Handle Vietnamese time format like "7 giờ 00'"
+                const timeMatch = timeStr.match(/(\d+)\s*giờ\s*(\d*)'/);
+                if (timeMatch) {
+                    const hours = parseInt(timeMatch[1]);
+                    const minutes = timeMatch[2] ? parseInt(timeMatch[2]) : 0;
+                    return hours * 60 + minutes;
+                }
+                
+                // Handle standard time format
+                const [time, modifier] = timeStr.split(' ');
+                let [hours, minutes] = time.split(':').map(Number);
+                
+                // Handle 12-hour format with AM/PM
+                if (modifier) {
+                    if (modifier.toLowerCase() === 'pm' && hours < 12) {
+                        hours += 12;
+                    }
+                    if (modifier.toLowerCase() === 'am' && hours === 12) {
+                        hours = 0;
+                    }
+                }
+                
+                return hours * 60 + (minutes || 0);
             }
             
             function loadTasksForDay(dayIndex, tasksContainer) {
@@ -794,7 +737,11 @@
                     const tasks = snapshot.val();
                     
                     if (tasks) {
-                        Object.keys(tasks).forEach(taskId => {
+                        // Sort tasks by time
+                        const sortedTaskIds = sortTasksByTime(tasks);
+                        
+                        // Create task elements in sorted order
+                        sortedTaskIds.forEach(taskId => {
                             const task = tasks[taskId];
                             const taskElement = createTaskElement(taskId, task, dayIndex);
                             tasksContainer.appendChild(taskElement);
@@ -808,19 +755,13 @@
                 taskElement.className = 'task';
                 taskElement.dataset.taskId = taskId;
                 
-                const taskHeader = document.createElement('div');
-                taskHeader.className = 'task-header';
-                
-                const taskTitle = document.createElement('div');
-                taskTitle.className = 'task-title';
-                taskTitle.textContent = task.title;
-                
                 const taskTime = document.createElement('div');
                 taskTime.className = 'task-time';
                 taskTime.textContent = task.time;
                 
-                taskHeader.appendChild(taskTitle);
-                taskHeader.appendChild(taskTime);
+                const taskTitle = document.createElement('div');
+                taskTitle.className = 'task-title';
+                taskTitle.textContent = task.title;
                 
                 const taskDetails = document.createElement('div');
                 taskDetails.className = 'task-details';
@@ -857,7 +798,8 @@
                 taskActions.appendChild(editBtn);
                 taskActions.appendChild(deleteBtn);
                 
-                taskElement.appendChild(taskHeader);
+                taskElement.appendChild(taskTime);
+                taskElement.appendChild(taskTitle);
                 taskElement.appendChild(taskDetails);
                 taskElement.appendChild(taskActions);
                 
@@ -908,7 +850,7 @@
                     const dataForExcel = [];
                     
                     // Add header row
-                    dataForExcel.push(['Thứ', 'Ngày', 'Giờ', 'Nội dung', 'Ghi chú']);
+                    dataForExcel.push(['Thứ', 'Ngày', 'Giờ', 'Nội dung', 'Địa điểm', 'Ghi chú']);
                     
                     const daysOfWeek = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'];
                     
@@ -920,13 +862,18 @@
                         
                         if (daysData && daysData[i] && daysData[i].tasks) {
                             const tasks = daysData[i].tasks;
-                            Object.keys(tasks).forEach(taskId => {
+                            
+                            // Sort tasks by time before adding to Excel
+                            const sortedTaskIds = sortTasksByTime(tasks);
+                            
+                            sortedTaskIds.forEach(taskId => {
                                 const task = tasks[taskId];
                                 dataForExcel.push([
                                     daysOfWeek[i],
                                     formattedDate,
                                     task.time,
                                     task.title,
+                                    task.location || '',
                                     task.description || ''
                                 ]);
                             });
@@ -997,45 +944,7 @@
                 taskForm.reset();
             });
             
-            searchForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const dateValue = searchDate.value;
-                const weekValue = searchWeek.value;
-                const yearValue = searchYear.value;
-                
-                if (dateValue) {
-                    // Search by specific date
-                    const selectedDate = new Date(dateValue);
-                    monday = getMonday(selectedDate);
-                    renderCalendar();
-                } else if (weekValue && yearValue) {
-                    // Search by week number
-                    const week = parseInt(weekValue);
-                    const year = parseInt(yearValue);
-                    
-                    if (week < 1 || week > 53) {
-                        alert('Vui lòng nhập số tuần từ 1 đến 53');
-                        return;
-                    }
-                    
-                    monday = getDateFromWeek(week, year);
-                    renderCalendar();
-                } else {
-                    alert('Vui lòng chọn ngày hoặc nhập số tuần và năm');
-                }
-            });
-            
-            // Close modal when clicking outside
-            window.addEventListener('click', function(e) {
-                if (e.target === taskModal) {
-                    taskModal.style.display = 'none';
-                    taskForm.reset();
-                }
-            });
-            
-            // Initialize
-            populateYearDropdown();
+            // Initialize the app
             renderCalendar();
         });
     </script>
